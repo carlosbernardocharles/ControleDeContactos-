@@ -23,15 +23,16 @@ namespace ControleDeContactos.Controllers
         {
             return View();
         }
-
+        /*
         public IActionResult Editar()
         {
             return View();
         }
-
-        public IActionResult ApagarConfirmacao()
+        */
+        public IActionResult ApagarConfirmacao(int id)
         {
-            return View();
+            ContactoModel contacto = _contactoRepositorio1.ListarPorId(id);
+            return View(contacto);
         }
 
         [HttpPost]
@@ -39,6 +40,26 @@ namespace ControleDeContactos.Controllers
         {
            _contactoRepositorio1.Adicionar(contacto);
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult Alterar(ContactoModel contacto)
+        {
+            _contactoRepositorio1.Atualizar(contacto);
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Editar(int id)
+        {
+            ContactoModel contacto =  _contactoRepositorio1.ListarPorId(id);
+            return View(contacto);
+        }
+
+        public IActionResult Apagar(int id)
+        {
+            _contactoRepositorio1.Apagar(id);
+            
+            return RedirectToAction("Index");  
         }
     }
 }

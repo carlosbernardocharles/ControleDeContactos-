@@ -24,9 +24,44 @@ namespace ControleDeContactos.Repositorio
             return contacto;
         }
 
+        public bool Apagar(int id)
+        {
+            ContactoModel contacto = ListarPorId(id);
+            if (contacto == null)
+            {
+                throw new Exception("Houve um erro na Remocao de contacto!");
+            }
+            _bancoContext.Contactos.Remove(contacto);
+            _bancoContext.SaveChanges();
+            return true;
+        }
+
+        public ContactoModel Atualizar(ContactoModel contacto)
+        {
+            ContactoModel contactoDB = ListarPorId(contacto.Id);
+            if(contactoDB == null)
+            {
+                throw new Exception("Houve um erro na atualizacao do contacto!");
+                
+            }
+            contactoDB.NomeContacto = contacto.NomeContacto;
+            contactoDB.Celular  =   contacto.Celular;
+            contactoDB.Email = contacto.Email;
+
+            _bancoContext.Contactos.Update(contactoDB);
+            _bancoContext.SaveChanges();
+
+            return contactoDB;
+        }
+
         public List<ContactoModel> BuscarTodos()
         {
             return _bancoContext.Contactos.ToList();
+        }
+
+        public ContactoModel ListarPorId(int id)
+        {
+            return _bancoContext.Contactos.FirstOrDefault(x => x.Id == id);
         }
     }
 }
